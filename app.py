@@ -1,12 +1,14 @@
 from flask import Flask, request, render_template
-
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
-
+import os
+from dotenv import load_dotenv
 from groq import Groq
-from secret import api_key
+
+load_dotenv()
+api_key = os.getenv("GROQ_API_KEY")
 
 
 app = Flask(__name__)
@@ -63,7 +65,7 @@ def index():
         Question:
         {query}
 
-        Answer clearly and based only on the context.
+        Answer clearly and based only on the context. Don't start answering using the words "According to the context" or "Based on the context". Just answer the question directly. If you don't know the answer, say you don't know. Don't try to make up an answer.
         """
 
         # Generate response
